@@ -4,7 +4,9 @@ import Link from "next/link";
 import React from "react";
 
 const TodoList = async () => {
-  const data = await fetch("http://localhost:3000/api/todos");
+  const data = await fetch("http://localhost:3000/api/todos", {
+    cache: "no-store",
+  });
   const todos = await data.json();
 
   return (
