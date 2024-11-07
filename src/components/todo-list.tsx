@@ -15,7 +15,7 @@ const TodoList = async () => {
         TODOリスト
       </Title>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {todos.map((todo: todo) => (
+        {todos?.map((todo: todo) => (
           <Link key={todo.id} href={`todos/${todo.id}`}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Group justify="space-between" mb="xs">
@@ -29,6 +29,12 @@ const TodoList = async () => {
               <Text size="xs" c="dimmed" mt="md">
                 作成日: {new Date(todo.createdAt).toLocaleDateString("ja-JP")}
               </Text>
+              <Link
+                href={`todos/edit/${todo.id}`}
+                className="bg-yellow-500 p-2 rounded text-white"
+              >
+                編集
+              </Link>
             </Card>
           </Link>
         ))}
