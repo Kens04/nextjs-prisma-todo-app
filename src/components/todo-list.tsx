@@ -1,5 +1,6 @@
 import { todo } from "@/types/type";
 import { Card, Container, Group, Text, Title } from "@mantine/core";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
@@ -8,12 +9,15 @@ const TodoList = async () => {
     cache: "no-store",
   });
   const todos = await data.json();
+  const session = await getServerSession();
+  const user = session?.user;
 
   return (
     <Container size="lg" py="xl">
       <Title order={2} mb="lg">
         TODOリスト
       </Title>
+      {session ? <div>{session?.user.name}</div> : null}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {todos?.map((todo: todo) => (
           <Link key={todo.id} href={`todos/${todo.id}`}>
@@ -29,12 +33,12 @@ const TodoList = async () => {
               <Text size="xs" c="dimmed" mt="md">
                 作成日: {new Date(todo.createdAt).toLocaleDateString("ja-JP")}
               </Text>
-              <Link
-                href={`todos/edit/${todo.id}`}
-                className="bg-yellow-500 p-2 rounded text-white"
-              >
-                編集
-              </Link>
+              {user ? (
+                <Link
+                  href={`todos/edit/${todo.id}`}
+                  className="bg-yellow-500 p-2 rounded text-white"
+                >編集</Link>
+              ) : null}
             </Card>
           </Link>
         ))}
